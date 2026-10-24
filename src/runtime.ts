@@ -122,11 +122,11 @@ function compareSemver(actual, minimum) {
     if (left[i] > right[i]) return 1;
     if (left[i] < right[i]) return -1;
   }
-  return 0;
+  return String(actual).split("+")[0].includes("-") ? -1 : 0;
 }
 
 function versionParts(value) {
-  const core = String(value).split("-")[0];
+  const core = String(value).split(/[+-]/)[0];
   return core.split(".").slice(0, 3).map((part) => {
     const n = Number(part);
     return Number.isFinite(n) ? n : 0;

@@ -30,6 +30,31 @@ test("Bun 1.4 is the pinned project runtime", () => {
   assert.equal(runtimeSupported(), true);
 });
 
+test("Bun prereleases below the stable minimum are unsupported", () => {
+  const runtimeUrl = new URL("../../dist/src/runtime.js", import.meta.url).href;
+  const cases = [
+    ["1.4.3", false],
+    ["1.4.4-canary.1", false],
+    ["1.4.4", true],
+    ["1.4.4+build.1", true],
+    ["1.4.5", true],
+  ];
+  const result = spawnSync(
+    process.execPath,
+    ["--input-type=module", "-e", `
+      const { runtimeSupported } = await import(${JSON.stringify(runtimeUrl)});
+      const cases = ${JSON.stringify(cases)};
+      console.log(JSON.stringify(cases.map(([version]) => {
+        Object.defineProperty(process.versions, "bun", { value: version, configurable: true });
+        return runtimeSupported();
+      })));
+    `],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(JSON.parse(result.stdout), cases.map(([, supported]) => supported));
+});
+
 test("unsupported Node guidance names the supported Bun minimum", () => {
   const runtimeUrl = new URL("../../dist/src/runtime.js", import.meta.url).href;
   const result = spawnSync(
