@@ -41,7 +41,7 @@ export function runtimeFix() {
   }
   return runtimeSupported()
     ? null
-    : "BetterWright needs Node 22 or newer, or Bun 1.4. Install Bun from https://bun.com";
+    : `BetterWright needs Node 22 or newer, or Bun ${PINNED_BUN_VERSION}. Install Bun from https://bun.com`;
 }
 
 export function packageAddCommand(packageName, globalInstall = false) {

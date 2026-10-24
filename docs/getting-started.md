@@ -26,7 +26,7 @@ install once and use either — or both.
 ## Install and set up
 
 BetterWright drives a managed browser through Playwright, so it needs
-**Bun 1.4** on your `PATH`. The browser itself is downloaded once.
+**Bun 1.4.4 or newer** on your `PATH`. The browser itself is downloaded once.
 
 ```bash
 bun install -g betterwright

@@ -46,7 +46,7 @@ client it does not know), or when you want to do it deliberately.
 
 ## Step 0 — Prerequisites (do this for every path)
 
-1. **Bun 1.4 must be on `PATH`.** Check with `bun --version`. If missing,
+1. **Bun 1.4.4 or newer must be on `PATH`.** Check with `bun --version`. If missing,
    tell the user to install it from https://bun.com — you cannot proceed
    without it. Do not install Bun from npm.
 2. **Install BetterWright:**

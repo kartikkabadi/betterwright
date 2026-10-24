@@ -30,6 +30,25 @@ test("Bun 1.4 is the pinned project runtime", () => {
   assert.equal(runtimeSupported(), true);
 });
 
+test("unsupported Node guidance names the supported Bun minimum", () => {
+  const runtimeUrl = new URL("../../dist/src/runtime.js", import.meta.url).href;
+  const result = spawnSync(
+    process.execPath,
+    ["--input-type=module", "-e", `
+      delete process.versions.bun;
+      Object.defineProperty(process.versions, "node", { value: "20.0.0" });
+      const { runtimeFix } = await import(${JSON.stringify(runtimeUrl)});
+      console.log(runtimeFix());
+    `],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(
+    result.stdout.trim(),
+    `BetterWright needs Node 22 or newer, or Bun ${PINNED_BUN_VERSION}. Install Bun from https://bun.com`,
+  );
+});
+
 test("NODE_OPTIONS --import flags become argv Bun will honor", () => {
   assert.deepEqual(importFlagsFromNodeOptions(""), []);
   assert.deepEqual(importFlagsFromNodeOptions("--import=file:///tmp/hook.mjs"), [
