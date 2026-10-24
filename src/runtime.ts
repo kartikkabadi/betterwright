@@ -5,7 +5,7 @@
 
 import { fileURLToPath } from "node:url";
 
-export const PINNED_BUN_VERSION = "1.4.0";
+export const PINNED_BUN_VERSION = "1.4.4";
 export const MIN_NODE_MAJOR = 22;
 
 export function runtimeIsBun() {

@@ -70,7 +70,7 @@ because they are enforced by code, not convention.
 ## Cursor Cloud specific instructions
 
 The Cloud Agent environment is defined by `.cursor/environment.json`, whose
-install phase (`.cursor/install.sh`) installs the `.bun-version` Bun (1.4.0,
+install phase (`.cursor/install.sh`) installs the `.bun-version` Bun (1.4.4,
 the `engines` floor) from bun.com, runs `bun install --frozen-lockfile`,
 builds the runtime/CLI, type-checks the test harness, and downloads the pinned
 BetterChromium backend. So `dist/`, `node_modules`, and the browser are already
@@ -86,6 +86,6 @@ tools on `PATH`. BetterWright's scripts are Bun, so put Bun first:
 
 ```bash
 export PATH="${BUN_INSTALL:-$HOME/.bun}/bin:$PATH"
-bun --version   # -> 1.4.0
+bun --version   # -> 1.4.4
 bun run lint    # and typecheck / test:unit / release:check
 ```

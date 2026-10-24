@@ -23,9 +23,9 @@ function bunPreloadPath(fileUrl) {
 }
 
 test("Bun 1.4 is the pinned project runtime", () => {
-  assert.equal(PINNED_BUN_VERSION, "1.4.0");
+  assert.equal(PINNED_BUN_VERSION, "1.4.4");
   assert.equal(runtimeIsBun(), true);
-  assert.equal(bunVersion(), "1.4.0");
+  assert.equal(bunVersion(), "1.4.4");
   assert.equal(runtimeLabel(), "Bun");
   assert.equal(runtimeSupported(), true);
 });
