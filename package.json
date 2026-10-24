@@ -116,9 +116,9 @@
     "prepublishOnly": "bun run release:check"
   },
   "engines": {
-    "bun": ">=1.4.0"
+    "bun": ">=1.4.4"
   },
-  "packageManager": "bun@1.4.0",
+  "packageManager": "bun@1.4.4",
   "publishConfig": {
     "access": "public"
   },

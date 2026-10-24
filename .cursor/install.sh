@@ -4,7 +4,7 @@
 # managed browser the runtime, CLI, and test harness expect.
 set -euo pipefail
 
-# 1. Bun. package.json pins engines bun >=1.4.0 and .bun-version records the
+# 1. Bun. package.json pins engines bun >=1.4.4 and .bun-version records the
 #    exact patch. The official installer is the only supported fetch: npm
 #    tarballs named bun@1.4.1+ have been malware, so never `npm i -g bun`.
 BUN_VERSION="$(tr -d '[:space:]' < .bun-version)"

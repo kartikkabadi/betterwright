@@ -5,7 +5,7 @@
 
 import { fileURLToPath } from "node:url";
 
-export const PINNED_BUN_VERSION = "1.4.0";
+export const PINNED_BUN_VERSION = "1.4.4";
 export const MIN_NODE_MAJOR = 22;
 
 export function runtimeIsBun() {
@@ -41,7 +41,7 @@ export function runtimeFix() {
   }
   return runtimeSupported()
     ? null
-    : "BetterWright needs Node 22 or newer, or Bun 1.4. Install Bun from https://bun.com";
+    : `BetterWright needs Node 22 or newer, or Bun ${PINNED_BUN_VERSION}. Install Bun from https://bun.com`;
 }
 
 export function packageAddCommand(packageName, globalInstall = false) {
@@ -122,11 +122,11 @@ function compareSemver(actual, minimum) {
     if (left[i] > right[i]) return 1;
     if (left[i] < right[i]) return -1;
   }
-  return 0;
+  return String(actual).split("+")[0].includes("-") ? -1 : 0;
 }
 
 function versionParts(value) {
-  const core = String(value).split("-")[0];
+  const core = String(value).split(/[+-]/)[0];
   return core.split(".").slice(0, 3).map((part) => {
     const n = Number(part);
     return Number.isFinite(n) ? n : 0;

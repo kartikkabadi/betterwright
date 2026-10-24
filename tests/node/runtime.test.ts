@@ -23,11 +23,55 @@ function bunPreloadPath(fileUrl) {
 }
 
 test("Bun 1.4 is the pinned project runtime", () => {
-  assert.equal(PINNED_BUN_VERSION, "1.4.0");
+  assert.equal(PINNED_BUN_VERSION, "1.4.4");
   assert.equal(runtimeIsBun(), true);
-  assert.equal(bunVersion(), "1.4.0");
+  assert.equal(bunVersion(), "1.4.4");
   assert.equal(runtimeLabel(), "Bun");
   assert.equal(runtimeSupported(), true);
+});
+
+test("Bun prereleases below the stable minimum are unsupported", () => {
+  const runtimeUrl = new URL("../../dist/src/runtime.js", import.meta.url).href;
+  const cases = [
+    ["1.4.3", false],
+    ["1.4.4-canary.1", false],
+    ["1.4.4", true],
+    ["1.4.4+build.1", true],
+    ["1.4.5", true],
+  ];
+  const result = spawnSync(
+    process.execPath,
+    ["--input-type=module", "-e", `
+      const { runtimeSupported } = await import(${JSON.stringify(runtimeUrl)});
+      const cases = ${JSON.stringify(cases)};
+      console.log(JSON.stringify(cases.map(([version]) => {
+        Object.defineProperty(process.versions, "bun", { value: version, configurable: true });
+        return runtimeSupported();
+      })));
+    `],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(JSON.parse(result.stdout), cases.map(([, supported]) => supported));
+});
+
+test("unsupported Node guidance names the supported Bun minimum", () => {
+  const runtimeUrl = new URL("../../dist/src/runtime.js", import.meta.url).href;
+  const result = spawnSync(
+    process.execPath,
+    ["--input-type=module", "-e", `
+      delete process.versions.bun;
+      Object.defineProperty(process.versions, "node", { value: "20.0.0" });
+      const { runtimeFix } = await import(${JSON.stringify(runtimeUrl)});
+      console.log(runtimeFix());
+    `],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(
+    result.stdout.trim(),
+    `BetterWright needs Node 22 or newer, or Bun ${PINNED_BUN_VERSION}. Install Bun from https://bun.com`,
+  );
 });
 
 test("NODE_OPTIONS --import flags become argv Bun will honor", () => {

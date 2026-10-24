@@ -17,7 +17,7 @@ The browser runtime itself does not require a model or an API key.
 
 ## Quickstart
 
-Install [Bun 1.4 or newer](https://bun.com) and make sure it is on your `PATH`.
+Install [Bun 1.4.4 or newer](https://bun.com) and make sure it is on your `PATH`.
 The CLI and setup commands use Bun; the ESM library can also be imported from
 Node.js 22 or newer.
 
